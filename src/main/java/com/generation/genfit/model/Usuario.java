@@ -23,6 +23,17 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	@NotNull(message = "O atributo Nome é obrigatório!")
+	private String nome;
 
 	@NotNull
 	@Size(min = 8, message = "A Senha deve ter no mínimo 8 caracteres")
