@@ -7,21 +7,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
 @Table (name = "tb_usuarios")
-public class Usuarios {
+public class Usuario {
 	
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
+	@NotNull
 	@Size(min = 8, message = "A Senha deve ter no mínimo 8 caracteres")
 	private String senha; 
 	
-	@NotBlank
+	@NotNull
 	@Email (message = "O atributo email é obrigatorio!")
 	private String usuario;
 	
