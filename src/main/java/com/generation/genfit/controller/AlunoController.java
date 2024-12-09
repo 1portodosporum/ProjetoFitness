@@ -1,6 +1,7 @@
 package com.generation.genfit.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,52 +21,63 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.genfit.model.Aluno;
 import com.generation.genfit.repository.AlunoRepository;
-
+import com.generation.genfit.service.AlunoService;
 
 import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/alunos")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AlunoController {
 
-@Autowired
-private AlunoRepository alunoRepository;
+    @Autowired
+    private AlunoRepository alunoRepository;
 
-@GetMapping
-public ResponseEntity<List<Aluno>> getAll() {
-return ResponseEntity.ok(alunoRepository.findAll());
+    @Autowired
+    private AlunoService alunoService;
 
-}
+    @GetMapping
+    public ResponseEntity<List<Aluno>> getAll() {
+        return ResponseEntity.ok(alunoRepository.findAll());
+    }
 
-@GetMapping("/{id}")
-public ResponseEntity<Aluno> getById(@PathVariable Long id) {
-return alunoRepository.findById(id).map(resposta -> ResponseEntity.ok(resposta))
-.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-}
+    @GetMapping("/{id}")
+        public ResponseEntity<Aluno> getById(@PathVariable Long id) {
+        return alunoRepository.findById(id).map(resposta -> ResponseEntity.ok(resposta))
+        .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
 
-@GetMapping("/nome/{nome}")
-public ResponseEntity<List<Aluno>> getByNome(@PathVariable String nome) {
-return ResponseEntity.ok(alunoRepository.findAllByNomeContainingIgnoreCase(nome));
-}
-@PostMapping
-public ResponseEntity<Aluno> post(@Valid @RequestBody Aluno aluno) {
-return ResponseEntity.status(HttpStatus.CREATED).body(alunoRepository.save(aluno));
-}
+    @GetMapping("/nome/{nome}")
+        public ResponseEntity<List<Aluno>> getByNome(@PathVariable String nome) {
+        return ResponseEntity.ok(alunoRepository.findAllByNomeContainingIgnoreCase(nome));
+    }
 
-@PutMapping
-public ResponseEntity<Aluno> put(@Valid @RequestBody Aluno aluno){
-return ResponseEntity.status(HttpStatus.OK).body(alunoRepository.save(aluno));
-}
-@ResponseStatus(HttpStatus.NO_CONTENT)
-@DeleteMapping("/{id}")
-public void delete(@PathVariable long id) {
-Optional<Aluno> aluno = alunoRepository.findById(id);
+    @GetMapping("/imc")
+        public ResponseEntity<List<Map<String, Object>>> getAlunoImc() {
+            return ResponseEntity.ok(alunoService.findByImc());
+    }
 
-if(aluno.isEmpty()) {
-throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-}
 
-alunoRepository.deleteById(id);
-}
+
+    @PostMapping
+        public ResponseEntity<Aluno> post(@Valid @RequestBody Aluno aluno) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(alunoRepository.save(aluno));
+    }
+
+    @PutMapping
+        public ResponseEntity<Aluno> put(@Valid @RequestBody Aluno aluno){
+        return ResponseEntity.status(HttpStatus.OK).body(alunoRepository.save(aluno));
+    }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable long id) {
+        Optional<Aluno> aluno = alunoRepository.findById(id);
+
+        if(aluno.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        alunoRepository.deleteById(id);
+    }
 }
