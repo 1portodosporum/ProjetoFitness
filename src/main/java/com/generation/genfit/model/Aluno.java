@@ -1,9 +1,12 @@
 package com.generation.genfit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,6 +35,30 @@ public class Aluno {
 	
 	@Size (min = 1, max = 15, message = "O atributo sexo deve ter entre 1 e 15 caracteres")
 	private String sexo;
+	
+	@ManyToOne
+	@JsonIgnoreProperties("aluno")
+	private Treino treino;
+	
+	@ManyToOne
+	@JsonIgnoreProperties("aluno")
+	private Usuario usuario;
+
+	public Treino getTreino() {
+		return treino;
+	}
+
+	public void setTreino(Treino treino) {
+		this.treino = treino;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 
 	public Long getId() {
 		return id;
