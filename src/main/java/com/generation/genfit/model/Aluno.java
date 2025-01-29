@@ -32,7 +32,17 @@ public class Aluno {
 	
 	@NotNull(message = "O atributo peso é Obrigatório!")
 	private float peso;
+
+	private String foto;
 	
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
 	@Size (min = 1, max = 15, message = "O atributo sexo deve ter entre 1 e 15 caracteres")
 	private String sexo;
 	
